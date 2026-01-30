@@ -1,34 +1,121 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Urlaubskasse</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urlaubskasse</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="beach-bg"></div>
+    
+    <div class="container">
+        <!-- Start Screen -->
+        <div id="startScreen" class="screen active">
+            <div class="logo">🏖️</div>
+            <h1 class="title">Urlaubskasse</h1>
+            <p class="subtitle">Gemeinsam sparen für den Traumurlaub</p>
+            
+            <div class="btn-group">
+                <button onclick="showCreate()" class="btn btn-primary">Neue Kasse erstellen</button>
+                <button onclick="showJoin()" class="btn btn-secondary">Kasse beitreten</button>
+            </div>
+        </div>
 
-<h2>Urlaubskasse</h2>
+        <!-- Create Screen -->
+        <div id="createScreen" class="screen">
+            <button onclick="showStart()" class="back-btn">← Zurück</button>
+            <h2 class="title-small">Neue Kasse erstellen</h2>
+            
+            <div class="card">
+                <div class="input-group">
+                    <label>Dein Nickname</label>
+                    <input type="text" id="createNickname" placeholder="z.B. Max" maxlength="20">
+                </div>
+                
+                <div class="input-group">
+                    <label>Kassenname</label>
+                    <input type="text" id="createFundName" placeholder="z.B. Mallorca 2026" maxlength="30">
+                </div>
+                
+                <div class="input-group">
+                    <label>Kassen-ID (4-8 Ziffern)</label>
+                    <input type="text" id="createId" placeholder="z.B. 1234" maxlength="8" pattern="[0-9]*">
+                    <small>Diese ID teilst du mit deinen Freunden. Merke sie dir gut!</small>
+                </div>
+                
+                <button onclick="createFund()" class="btn btn-primary btn-full">Kasse erstellen</button>
+            </div>
+        </div>
 
-<div id="login">
-  <input id="nickname" placeholder="Nickname"><br>
-  <input id="kassenId" placeholder="Kassen-ID (4–8 Zahlen)"><br>
+        <!-- Join Screen -->
+        <div id="joinScreen" class="screen">
+            <button onclick="showStart()" class="back-btn">← Zurück</button>
+            <h2 class="title-small">Kasse beitreten</h2>
+            
+            <div class="card">
+                <div class="input-group">
+                    <label>Dein Nickname</label>
+                    <input type="text" id="joinNickname" placeholder="z.B. Lisa" maxlength="20">
+                </div>
+                
+                <div class="input-group">
+                    <label>Kassen-ID</label>
+                    <input type="text" id="joinId" placeholder="ID eingeben" maxlength="8" pattern="[0-9]*">
+                </div>
+                
+                <button onclick="joinFund()" class="btn btn-primary btn-full">Beitreten</button>
+            </div>
+        </div>
 
-  <button onclick="createKasse()">Kasse erstellen</button>
-  <button onclick="joinKasse()">Kasse beitreten</button>
-</div>
+        <!-- Main Fund Screen -->
+        <div id="fundScreen" class="screen">
+            <div class="header-card">
+                <div class="header-info">
+                    <h2 id="fundName" class="fund-title"></h2>
+                    <div class="meta">
+                        <span id="userNickname" class="badge"></span>
+                        <span id="fundId" class="badge-id"></span>
+                    </div>
+                </div>
+                <button onclick="leaveFund()" class="btn-leave">Verlassen</button>
+            </div>
 
-<div id="kasse" style="display:none">
-  <h3>Saldo: <span id="saldo">0</span> €</h3>
+            <div class="balance-card">
+                <div class="balance-label">Gemeinsames Guthaben</div>
+                <div id="balance" class="balance">0,00 €</div>
+            </div>
 
-  <input id="betrag" type="number" placeholder="Betrag"><br>
+            <div class="card">
+                <h3 class="card-title">Neue Transaktion</h3>
+                <div class="input-group">
+                    <label>Betrag (€)</label>
+                    <input type="number" id="amount" placeholder="0.00" step="0.01" min="0.01">
+                </div>
+                
+                <div class="btn-row">
+                    <button onclick="deposit()" class="btn btn-success">+ Einzahlen</button>
+                    <button onclick="withdraw()" class="btn btn-danger">- Abheben</button>
+                </div>
+            </div>
 
-  <button onclick="addMoney()">Einzahlen</button>
-  <button onclick="removeMoney()">Abheben</button>
+            <div class="card">
+                <h3 class="card-title">Transaktionsverlauf</h3>
+                <div id="history" class="history"></div>
+            </div>
+        </div>
 
-  <h4>Verlauf</h4>
-  <ul id="verlauf"></ul>
-</div>
+        <!-- Loading -->
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+        </div>
+    </div>
 
-<script src="app.js"></script>
+    <div id="notification" class="notification"></div>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
